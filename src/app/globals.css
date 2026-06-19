@@ -1,0 +1,59 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+input[type="radio"] {
+  appearance: auto !important;
+  accent-color: #967bb6; /* Your lavender color */
+}
+/* Animation for the navbar border */
+.navbar-gradient-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(138, 150, 206, 0.8), transparent);
+  background-size: 200% 100%;
+  animation: moveGradient 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes moveGradient {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* globals.css */
+.lightning-border {
+  position: relative;
+  padding: 6px; /* Controls border thickness */
+  border-radius: 0.125rem; /* Matches rounded-3xl */
+  overflow: hidden;
+  background: #1a1a2e; /* Matches your section background */
+}
+
+.lightning-border::before {
+  content: '';
+  position: absolute;
+  top: -50%; 
+  left: -50%; 
+  width: 200%; 
+  height: 200%;
+  z-index: 0;
+  /* Lightning colors: blue to orange glow */
+  background: conic-gradient(
+    transparent, #00d4ff, #ffffff, #ff9500, transparent
+  );
+  animation: rotate-lightning 3s linear infinite;
+}
+
+@keyframes rotate-lightning {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@layer components {
+  .btn-gradient {
+    @apply w-full font-bold text-white bg-gradient-to-r from-[#1a1a2e] to-[#967bb6] hover:opacity-90 transition-opacity;
+  }
+}
