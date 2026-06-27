@@ -14,156 +14,170 @@ import { Eye, EyeSlash, At, ShieldKeyhole } from "@gravity-ui/icons";
 import { signIn } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { FaChrome } from "react-icons/fa";
 
 export default function SigninPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/";
+
+  const [email, setEmail] = useState(searchParams.get("email") || "");
+  const [password, setPassword] = useState(searchParams.get("password") || "");
+
+  const router = useRouter();
+
+  const redirectTo = searchParams.get("redirect") || "/dashboard";
 
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const toggleVisibility = () => setIsVisible(!isVisible);
-
-  // Email Sign-in Logic
   const handleSignin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const { error } = await signIn.email({
-      email,
-      password,
-      callbackURL: redirectTo,
-    });
+    try {
+      const { error: authError } = await signIn.email({
+        email,
+        password,
+      });
 
-    if (error) {
-      toast.error(error.message || "Invalid credentials.");
+      if (authError) {
+        toast.error("Signin failed");
+      } else {
+        toast.success("Welcome back!");
+        router.push(redirectTo);
+      }
+    } catch (err) {
+      toast.error("Network Error");
+    } finally {
       setIsLoading(false);
-    } else {
-      toast.success("Welcome back!");
-      router.push(redirectTo);
     }
   };
 
-  // Google OAuth Logic
   const handleGoogleSignin = async () => {
-    setIsGoogleLoading(true);
-    const { error } = await signIn.social({
-      provider: "google",
-      callbackURL: redirectTo,
-    });
+    setIsLoading(true);
 
-    if (error) {
-      toast.error("Google sign-in failed.");
-      setIsGoogleLoading(false);
+    try {
+      await signIn.social({
+        provider: "google",
+        callbackURL: redirectTo,
+      });
+    } catch (err) {
+      toast.error("Google signin failed");
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-[#1a1a2e] px-4 py-10">
-      {/* Gradient Border Wrapper */}
-      <div className="relative p-[1px] rounded-2xl bg-gradient-to-r from-purple-500/50 to-blue-500/50 w-full max-w-md">
-        {/* Glassmorphism Card */}
-        <Card className="w-full p-6 bg-[#1a1a2e] backdrop-blur-xl border border-white/10 shadow-2xl">
-          {/* Header with Logo */}
-          <div className="flex flex-col items-center justify-center gap-2 pb-6 text-center">
-            <img
-              src="/logo.png"
-              alt="Promptrix"
-              className="h-12 w-12 object-contain"
-            />
-            <h1 className="text-2xl font-bold text-white">Welcome Back</h1>
-            <p className="text-sm text-zinc-400">
-              Sign in to access your account
-            </p>
-          </div>
+    <main
+      className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#1a1a2e] bg-cover bg-center px-4 py-10 text-white"
+      style={{
+        backgroundImage:
+          "linear-gradient(rgba(26,26,46,.82), rgba(18,19,34,.92)), url('/sign-up-bg.png')",
+      }}
+    >
+      <div className="absolute right-1/2 top-0 h-[520px] w-[520px] translate-x-1/2 rounded-full bg-[#967bb6]/20 blur-[120px]" />
 
-          <form onSubmit={handleSignin} className="flex flex-col gap-4">
-            {/* Google Sign-in Button */}
+      <section className="relative z-10 w-full max-w-md">
+        <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-[1px] shadow-2xl shadow-black/40 backdrop-blur-xl">
+          <Card className="border-0 bg-[#121322]/80 p-6 shadow-none sm:p-8">
+            <div className="mb-8 text-center">
+              <img
+                src="/logo.png"
+                alt="Promptrix"
+                className="mx-auto h-12 w-12 object-contain"
+              />
+
+              <h1 className="mt-3 text-2xl font-black text-white">Promptrix</h1>
+
+              <p className="mt-1 text-sm text-white/45">
+                Sign in to access your prompt hub.
+              </p>
+            </div>
+
+            <div className="mb-7">
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#967bb6]">
+                Login
+              </p>
+
+              <h2 className="mt-2 text-3xl font-black italic text-white">
+                Welcome Back
+              </h2>
+            </div>
+
             <Button
-              variant="flat"
-              isLoading={isGoogleLoading}
+              type="button"
               onClick={handleGoogleSignin}
-              className="w-full h-12 rounded-xl font-medium bg-white/5 border border-white/10 text-white hover:bg-white/10 transition flex items-center justify-center gap-3"
+              disabled={isLoading}
+              className="mb-5 h-12 w-full rounded-xl border border-white/10 bg-white/[0.06] font-bold text-white transition hover:border-[#967bb6]/70 hover:bg-white/[0.1]"
             >
-              {/* Inline White Google SVG */}
-              <svg
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-                fill="currentColor"
-              >
-                <path d="M21.35 11.1h-9.28v2.85h5.36c-.46 2.37-2.52 3.65-4.57 3.65-2.73 0-5.07-2.07-5.07-5.1 0-3.03 2.34-5.1 5.07-5.1 1.44 0 2.76.5 3.75 1.48l2.13-2.13C15.6 3.64 13.75 3 12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c4.97 0 9-4.03 9-9 0-.64-.07-1.27-.2-1.9z" />
-              </svg>
+              <FaChrome size={18} />
               Continue with Google
             </Button>
 
-            {/* Divider */}
-            <div className="flex items-center gap-4 text-xs text-zinc-500 uppercase">
-              <div className="flex-1 h-px bg-white/10" />
-              OR
-              <div className="flex-1 h-px bg-white/10" />
+            <div className="mb-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/35">
+                or email
+              </span>
+              <div className="h-px flex-1 bg-white/10" />
             </div>
 
-            {/* Email Field */}
-            <TextField isRequired className="flex flex-col gap-1.5">
-              <Label className="text-sm text-zinc-300">Email Address</Label>
-              <InputGroup className="bg-zinc-900 border border-zinc-800 rounded-xl px-3 focus-within:border-blue-500">
-                <At className="text-zinc-500" size={16} />
+            <form onSubmit={handleSignin} className="flex flex-col gap-4">
+              <AuthField label="Email" icon={<At size={16} />}>
                 <Input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full py-2 bg-transparent outline-none text-white"
+                  className="w-full bg-transparent py-2 text-white outline-none"
                 />
-              </InputGroup>
-            </TextField>
+              </AuthField>
 
-            {/* Password Field */}
-            <TextField isRequired className="flex flex-col gap-1.5">
-              <Label className="text-sm text-zinc-300">Password</Label>
-              <InputGroup className="bg-zinc-900 border border-zinc-800 rounded-xl px-3 focus-within:border-blue-500">
-                <ShieldKeyhole className="text-zinc-500" size={16} />
+              <AuthField label="Password" icon={<ShieldKeyhole size={16} />}>
                 <Input
                   type={isVisible ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full py-2 bg-transparent outline-none text-white"
+                  className="w-full bg-transparent py-2 text-white outline-none"
                 />
+
                 <button
                   type="button"
-                  onClick={toggleVisibility}
-                  className="text-zinc-500"
+                  onClick={() => setIsVisible(!isVisible)}
+                  className="text-white/40 transition hover:text-white"
                 >
                   {isVisible ? <EyeSlash size={18} /> : <Eye size={18} />}
                 </button>
-              </InputGroup>
-            </TextField>
+              </AuthField>
 
-            {/* Sign In Button */}
-            <Button
-              type="submit"
-              isLoading={isLoading}
-              className="w-full font-bold text-white bg-gradient-to-r from-[#1a1a2e] to-[#967bb6] hover:opacity-90 transition-opacity mt-2"
-            >
-              Sign In
-            </Button>
-
-            {/* Footer Link */}
-            <div className="text-center mt-2 text-sm text-zinc-400">
-              New to Promptrix?{" "}
-              <Link
-                href={`/auth/signup?redirect=${encodeURIComponent(redirectTo)}`}
-                className="text-blue-400 font-medium"
+              <Button
+                type="submit"
+                isLoading={isLoading}
+                className="mt-2 h-12 w-full rounded-xl bg-gradient-to-r from-[#1a1a2e] to-[#967bb6] font-bold text-white shadow-lg shadow-[#967bb6]/20 transition hover:scale-[1.01]"
               >
-                Create an account
+                Sign In
+              </Button>
+            </form>
+
+            <div className="mt-5 text-center text-sm text-white/45">
+              New to Promptrix?{" "}
+              <Link href="/auth/signup" className="font-bold text-[#cdb7e8]">
+                Create account
               </Link>
             </div>
-          </form>
-        </Card>
-      </div>
-    </div>
+          </Card>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function AuthField({ label, icon, children, required = true }) {
+  return (
+    <TextField isRequired={required} className="flex flex-col gap-1.5">
+      <Label className="text-sm text-white/60">{label}</Label>
+
+      <InputGroup className="rounded-xl border border-white/10 bg-[#121322] px-3 text-white transition focus-within:border-[#967bb6] focus-within:ring-2 focus-within:ring-[#967bb6]/20">
+        <span className="text-white/35">{icon}</span>
+        {children}
+      </InputGroup>
+    </TextField>
   );
 }

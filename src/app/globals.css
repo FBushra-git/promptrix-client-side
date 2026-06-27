@@ -16,6 +16,7 @@ input[type="radio"] {
   background-size: 200% 100%;
   animation: moveGradient 4s linear infinite;
   pointer-events: none;
+
 }
 
 @keyframes moveGradient {
@@ -55,5 +56,143 @@ input[type="radio"] {
 @layer components {
   .btn-gradient {
     @apply w-full font-bold text-white bg-gradient-to-r from-[#1a1a2e] to-[#967bb6] hover:opacity-90 transition-opacity;
+  }
+}
+
+
+/* Toastify theme override */
+.Toastify__toast {
+  background: #1a1a2e !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(150, 123, 182, 0.45);
+  border-radius: 0.75rem !important;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.Toastify__toast--success {
+  background: linear-gradient(135deg, #1a1a2e, #2b2440) !important;
+  border-color: rgba(150, 123, 182, 0.75);
+}
+
+.Toastify__toast--error {
+  background: linear-gradient(135deg, #1a1a2e, #3a1f38) !important;
+  border-color: rgba(255, 99, 132, 0.65);
+}
+
+.Toastify__toast--warning {
+  background: linear-gradient(135deg, #1a1a2e, #3b3145) !important;
+  border-color: rgba(255, 190, 118, 0.65);
+}
+
+.Toastify__toast-icon svg {
+  fill: #967bb6 !important;
+}
+
+.Toastify__close-button {
+  color: #ffffff !important;
+  opacity: 0.75 !important;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1 !important;
+}
+
+.Toastify__progress-bar {
+  background: linear-gradient(90deg, #8a96ce, #967bb6, #ffffff) !important;
+}
+
+/* Prompt details page buttons */
+.prompt-action-btn {
+  @apply flex items-center gap-2 rounded-lg border px-5 py-3 text-sm font-medium shadow transition-all disabled:cursor-not-allowed disabled:opacity-50;
+  background: linear-gradient(135deg, #1a1a2e, #2b2440);
+  border-color: rgba(150, 123, 182, 0.45);
+  color: #ffffff;
+}
+
+.prompt-action-btn:hover {
+  background: linear-gradient(135deg, #252542, #3a2f55);
+  border-color: rgba(150, 123, 182, 0.8);
+}
+
+.prompt-danger-btn {
+  @apply flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-medium shadow transition-all;
+  background: linear-gradient(135deg, #3a1f38, #967bb6);
+  color: #ffffff;
+}
+
+.prompt-danger-btn:hover {
+  opacity: 0.9;
+}
+
+.prompt-submit-btn {
+  @apply rounded-lg px-5 py-2 font-medium text-white transition-all;
+  background: linear-gradient(135deg, #1a1a2e, #967bb6);
+}
+
+.prompt-submit-btn:hover {
+  opacity: 0.9;
+}
+@keyframes promptFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes promptFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.streetwear-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.streetwear-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(150, 123, 182, 0.12),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: streetwearShine 4s infinite;
+  pointer-events: none;
+}
+
+@keyframes streetwearShine {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  45%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes promptFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
