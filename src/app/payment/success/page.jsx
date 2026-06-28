@@ -37,7 +37,7 @@ export default async function PaymentSuccessPage({ searchParams }) {
     amount: checkoutSession.amount_total / 100,
     currency: checkoutSession.currency,
     date: new Date().toISOString(),
-  });
+  }, await headers());
 
   redirect(redirectTo);
 }

@@ -24,6 +24,7 @@ export function DashboardSidebar() {
 
   const user = session?.user;
   const role = user?.role?.toLowerCase() || "user";
+  console.log({role})
 
   const adminNavLinks = [
     { icon: House, href: "/dashboard/admin", label: "Dashboard" },

@@ -11,7 +11,7 @@ import {
 const demoAccounts = [
   {
     role: "Admin",
-    email: "adminnew@gmail.com",
+    email: "adminnew2@gmail.com",
     password: "AdN123456",
     icon: ShieldCheck,
     accent: "from-red-400 to-[#967bb6]",
@@ -20,8 +20,8 @@ const demoAccounts = [
   },
   {
     role: "creator",
-    email: "creator@gmail.com",
-    password: "Cr123456",
+    email: "tasminbushra@gmail.com",
+    password: "Bt123456",
     icon: PenTool,
     accent: "from-[#967bb6] to-[#8a96ce]",
     button: "bg-[#1f2435] hover:bg-[#252b3f]",
@@ -29,8 +29,8 @@ const demoAccounts = [
   },
   {
     role: "user",
-    email: "user1@gmail.com",
-    password: "Ts123456",
+    email: "nerd@gmail.com",
+    password: "Sn@12345",
     icon: UserRound,
     accent: "from-[#22d3ee] to-[#967bb6]",
     button: "bg-[#1f2435] hover:bg-[#252b3f]",

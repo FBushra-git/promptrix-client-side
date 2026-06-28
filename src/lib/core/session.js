@@ -4,34 +4,9 @@ import { auth } from "../auth";
 import { headers } from "next/headers";
 
 
-const getServerHeaders = () => {
-  const nextHeaders = headers();
-  const headerObj = {};
-
-  if (typeof nextHeaders.forEach === "function") {
-    nextHeaders.forEach((value, key) => {
-      headerObj[key] = value;
-    });
-    return headerObj;
-  }
-
-  if (typeof nextHeaders[Symbol.iterator] === "function") {
-    return Object.fromEntries(nextHeaders);
-  }
-
-  const keys = typeof nextHeaders.keys === "function" ? nextHeaders.keys() : null;
-  if (keys && typeof keys[Symbol.iterator] === "function") {
-    for (const key of keys) {
-      headerObj[key] = nextHeaders.get(key);
-    }
-  }
-
-  return headerObj;
-};
-
 export const getUserSession = async () => {
   const session = await auth.api.getSession({
-    headers: getServerHeaders(),
+    headers: await headers(),
   });
 
   return session?.user || null;
@@ -39,7 +14,7 @@ export const getUserSession = async () => {
 
 export const getUserToken = async () => {
   const session = await auth.api.getSession({
-    headers: getServerHeaders(),
+    headers: await headers(),
   });
 
   const token = session?.session?.token || null;

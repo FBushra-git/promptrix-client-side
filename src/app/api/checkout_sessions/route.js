@@ -9,7 +9,8 @@ export async function POST(request) {
     const headersList = await headers();
     const origin = headersList.get("origin");
 
-    const user = await getUserSession(headers());
+    const user = await getUserSession();
+    console.log(user)
 
     if (!user?.email) {
       return NextResponse.json(
