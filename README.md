@@ -4,7 +4,7 @@
 Promptrix is an AI prompt marketplace built with Next.js and MongoDB. It enables prompt creators to submit and manage AI prompts, while users can browse, bookmark, review, and unlock premium content. Admins moderate prompts, approve or reject submissions, and manage users.
 
 ## Live URL
-`https://your-live-url.com`  <!-- replace with actual deployment URL -->
+https://promptrix-client.vercel.app/  
 
 ## Purpose
 This project was created to demonstrate a modern creator marketplace:
